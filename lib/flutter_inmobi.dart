@@ -104,11 +104,11 @@ class InmobiMobileAdTargetingInfo {
   }
 }
 
-enum AnchorType { bottom, top }
+enum InmobiAnchorType { bottom, top }
 
 // The types of ad sizes supported for banners. The names of the values are used
 // in MethodChannel calls to iOS and Android, and should not be changed.
-enum AdSizeType {
+enum InmobiAdSizeType {
   WidthAndHeight,
   SmartBanner,
 }
@@ -118,10 +118,10 @@ enum AdSizeType {
 /// [Android](https://developers.google.com/admob/android/banner#banner_sizes)
 /// and [iOS](https://developers.google.com/admob/ios/banner#banner_sizes) for
 /// additional details.
-class AdSize {
+class InmobiAdSize {
   // Private constructor. Apps should use the static constants rather than
   // create their own instances of [AdSize].
-  const AdSize._({
+  const InmobiAdSize._({
     @required this.width,
     @required this.height,
     @required this.adSizeType,
@@ -129,41 +129,41 @@ class AdSize {
 
   final int height;
   final int width;
-  final AdSizeType adSizeType;
+  final InmobiAdSizeType adSizeType;
 
   /// The standard banner (320x50) size.
-  static const AdSize banner = AdSize._(
+  static const InmobiAdSize banner = InmobiAdSize._(
     width: 320,
     height: 50,
-    adSizeType: AdSizeType.WidthAndHeight,
+    adSizeType: InmobiAdSizeType.WidthAndHeight,
   );
 
   /// The large banner (320x100) size.
-  static const AdSize largeBanner = AdSize._(
+  static const InmobiAdSize largeBanner = InmobiAdSize._(
     width: 320,
     height: 100,
-    adSizeType: AdSizeType.WidthAndHeight,
+    adSizeType: InmobiAdSizeType.WidthAndHeight,
   );
 
   /// The medium rectangle (300x250) size.
-  static const AdSize mediumRectangle = AdSize._(
+  static const InmobiAdSize mediumRectangle = InmobiAdSize._(
     width: 300,
     height: 250,
-    adSizeType: AdSizeType.WidthAndHeight,
+    adSizeType: InmobiAdSizeType.WidthAndHeight,
   );
 
   /// The full banner (468x60) size.
-  static const AdSize fullBanner = AdSize._(
+  static const InmobiAdSize fullBanner = InmobiAdSize._(
     width: 468,
     height: 60,
-    adSizeType: AdSizeType.WidthAndHeight,
+    adSizeType: InmobiAdSizeType.WidthAndHeight,
   );
 
   /// The leaderboard (728x90) size.
-  static const AdSize leaderboard = AdSize._(
+  static const InmobiAdSize leaderboard = InmobiAdSize._(
     width: 728,
     height: 90,
-    adSizeType: AdSizeType.WidthAndHeight,
+    adSizeType: InmobiAdSizeType.WidthAndHeight,
   );
 
   /// The smart banner size. Smart banners are unique in that the width and
@@ -173,10 +173,10 @@ class AdSize {
   /// calculation based on the displaying device's height. For more info see the
   /// [Android](https://developers.google.com/admob/android/banner) and
   /// [iOS](https://developers.google.com/admob/ios/banner) banner ad guides.
-  static const AdSize smartBanner = AdSize._(
+  static const InmobiAdSize smartBanner = InmobiAdSize._(
     width: 0,
     height: 0,
-    adSizeType: AdSizeType.SmartBanner,
+    adSizeType: InmobiAdSizeType.SmartBanner,
   );
 }
 
@@ -185,9 +185,9 @@ class AdSize {
 /// A [MobileAd] must be loaded with [load] before it is shown with [show].
 ///
 /// A valid [adUnitId] is required.
-abstract class MobileAd {
+abstract class InmobiMobileAd {
   /// Default constructor, used by subclasses.
-  MobileAd(
+  InmobiMobileAd(
       {@required this.adUnitId,
         InmobiMobileAdTargetingInfo targetingInfo,
         this.listener})
@@ -197,7 +197,7 @@ abstract class MobileAd {
     _allAds[id] = this;
   }
 
-  static final Map<int, MobileAd> _allAds = <int, MobileAd>{};
+  static final Map<int, InmobiMobileAd> _allAds = <int, InmobiMobileAd>{};
 
   /// Optional targeting info per the native AdMob API.
   InmobiMobileAdTargetingInfo get targetingInfo => _targetingInfo;
@@ -232,7 +232,7 @@ abstract class MobileAd {
   Future<bool> show(
       {double anchorOffset = 0.0,
         double horizontalCenterOffset = 0.0,
-        AnchorType anchorType = AnchorType.bottom}) {
+        InmobiAnchorType anchorType = InmobiAnchorType.bottom}) {
     return _invokeBooleanMethod("showAd", <String, dynamic>{
       'id': id,
       'anchorOffset': anchorOffset.toString(),
@@ -259,11 +259,11 @@ abstract class MobileAd {
 }
 
 /// A banner ad for the [FirebaseAdMobPlugin].
-class BannerAd extends MobileAd {
+class InmobiBannerAd extends InmobiMobileAd {
   /// Create a BannerAd.
   ///
   /// A valid [adUnitId] is required.
-  BannerAd({
+  InmobiBannerAd({
     @required String adUnitId,
     @required this.size,
     InmobiMobileAdTargetingInfo targetingInfo,
@@ -273,7 +273,7 @@ class BannerAd extends MobileAd {
       targetingInfo: targetingInfo,
       listener: listener);
 
-  final AdSize size;
+  final InmobiAdSize size;
 
   /// These are AdMob's test ad unit IDs, which always return test ads. You're
   /// encouraged to use them for testing in your own apps.
@@ -295,11 +295,11 @@ class BannerAd extends MobileAd {
 }
 
 /// A full-screen interstitial ad for the [FirebaseAdMobPlugin].
-class InterstitialAd extends MobileAd {
+class InmobiInterstitialAd extends InmobiMobileAd {
   /// Create an Interstitial.
   ///
   /// A valid [adUnitId] is required.
-  InterstitialAd({
+  InmobiInterstitialAd({
     String adUnitId,
     InmobiMobileAdTargetingInfo targetingInfo,
     InmobiMobileAdListener listener,
@@ -329,7 +329,7 @@ class InterstitialAd extends MobileAd {
 ///
 /// The [rewarded] event is particularly important, since it indicates that the
 /// user has watched a video for long enough to be given an in-app reward.
-enum RewardedVideoAdEvent {
+enum InmobiRewardedVideoAdEvent {
   loaded,
   failedToLoad,
   opened,
@@ -345,7 +345,7 @@ enum RewardedVideoAdEvent {
 /// is sent, when they'll contain the reward amount and reward type that were
 /// configured for the AdMob ad unit when it was created. They will be null for
 /// all other events.
-typedef void RewardedVideoAdListener(RewardedVideoAdEvent event,
+typedef void InmobiRewardedVideoAdListener(InmobiRewardedVideoAdEvent event,
     {String rewardType, int rewardAmount, String adResource});
 
 /// An AdMob rewarded video ad.
@@ -382,8 +382,8 @@ typedef void RewardedVideoAdListener(RewardedVideoAdEvent event,
 /// Only one rewarded video ad can be loaded at a time. Because the video assets
 /// are so large, it's a good idea to start loading an ad well in advance of
 /// when it's likely to be needed.
-class RewardedVideoAd {
-  RewardedVideoAd._();
+class InmobiRewardedVideoAd {
+  InmobiRewardedVideoAd._();
 
   /// A platform-specific AdMob test ad unit ID for rewarded video ads. This ad
   /// unit has been specially configured to always return test ads, and
@@ -392,13 +392,13 @@ class RewardedVideoAd {
       ? 'ca-app-pub-3940256099942544/5224354917'
       : 'ca-app-pub-3940256099942544/1712485313';
 
-  static final RewardedVideoAd _instance = RewardedVideoAd._();
+  static final InmobiRewardedVideoAd _instance = InmobiRewardedVideoAd._();
 
   /// The one and only instance of this class.
-  static RewardedVideoAd get instance => _instance;
+  static InmobiRewardedVideoAd get instance => _instance;
 
   /// Callback invoked for events in the rewarded video ad lifecycle.
-  RewardedVideoAdListener listener;
+  InmobiRewardedVideoAdListener listener;
 
   /// Shows a rewarded video ad if one has been loaded.
   Future<bool> show() {
@@ -471,16 +471,16 @@ class FlutterInmobi {
     'onAdClosed': InmobiMobileAdEvent.closed,
   };
 
-  static const Map<String, RewardedVideoAdEvent> _methodToRewardedVideoAdEvent =
-  <String, RewardedVideoAdEvent>{
-    'onRewarded': RewardedVideoAdEvent.rewarded,
-    'onRewardedVideoAdClosed': RewardedVideoAdEvent.closed,
-    'onRewardedVideoAdFailedToLoad': RewardedVideoAdEvent.failedToLoad,
-    'onRewardedVideoAdLeftApplication': RewardedVideoAdEvent.leftApplication,
-    'onRewardedVideoAdLoaded': RewardedVideoAdEvent.loaded,
-    'onRewardedVideoAdOpened': RewardedVideoAdEvent.opened,
-    'onRewardedVideoStarted': RewardedVideoAdEvent.started,
-    'onRewardedVideoCompleted': RewardedVideoAdEvent.completed,
+  static const Map<String, InmobiRewardedVideoAdEvent> _methodToRewardedVideoAdEvent =
+  <String, InmobiRewardedVideoAdEvent>{
+    'onRewarded': InmobiRewardedVideoAdEvent.rewarded,
+    'onRewardedVideoAdClosed': InmobiRewardedVideoAdEvent.closed,
+    'onRewardedVideoAdFailedToLoad': InmobiRewardedVideoAdEvent.failedToLoad,
+    'onRewardedVideoAdLeftApplication': InmobiRewardedVideoAdEvent.leftApplication,
+    'onRewardedVideoAdLoaded': InmobiRewardedVideoAdEvent.loaded,
+    'onRewardedVideoAdOpened': InmobiRewardedVideoAdEvent.opened,
+    'onRewardedVideoStarted':InmobiRewardedVideoAdEvent.started,
+    'onRewardedVideoCompleted': InmobiRewardedVideoAdEvent.completed,
   };
 
   /// Initialize this plugin for the AdMob app specified by `appId`.
@@ -500,27 +500,27 @@ class FlutterInmobi {
   Future<dynamic> _handleMethod(MethodCall call) {
     assert(call.arguments is Map);
     final Map<dynamic, dynamic> argumentsMap = call.arguments;
-    final RewardedVideoAdEvent rewardedEvent =
+    final InmobiRewardedVideoAdEvent rewardedEvent =
     _methodToRewardedVideoAdEvent[call.method];
     print(
         '_handleMethod${call.method},${argumentsMap.keys},${argumentsMap.values}');
 
     if (rewardedEvent != null) {
-      if (RewardedVideoAd.instance.listener != null) {
-        if (rewardedEvent == RewardedVideoAdEvent.rewarded) {
-          RewardedVideoAd.instance.listener(rewardedEvent,
+      if (InmobiRewardedVideoAd.instance.listener != null) {
+        if (rewardedEvent == InmobiRewardedVideoAdEvent.rewarded) {
+          InmobiRewardedVideoAd.instance.listener(rewardedEvent,
               rewardType: argumentsMap['rewardType'],
               rewardAmount: argumentsMap['rewardAmount'],
               adResource: argumentsMap['adResource']);
         } else {
-          RewardedVideoAd.instance
+          InmobiRewardedVideoAd.instance
               .listener(rewardedEvent, adResource: argumentsMap['adResource']);
         }
       }
     } else {
       final int id = argumentsMap['id'];
-      if (id != null && MobileAd._allAds[id] != null) {
-        final MobileAd ad = MobileAd._allAds[id];
+      if (id != null && InmobiMobileAd._allAds[id] != null) {
+        final InmobiMobileAd ad = InmobiMobileAd._allAds[id];
         final InmobiMobileAdEvent mobileAdEvent = _methodToMobileAdEvent[call.method];
         if (mobileAdEvent != null && ad.listener != null) {
           ad.listener(mobileAdEvent, adResource: argumentsMap['adResource']);

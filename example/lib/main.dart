@@ -25,16 +25,16 @@ class _MyAppState extends State<MyApp> {
     nonPersonalizedAds: true,
   );
 
-  BannerAd _bannerAd;
-  InterstitialAd _interstitialAd;
+  InmobiBannerAd _bannerAd;
+  InmobiInterstitialAd _interstitialAd;
   int _coins = 0;
   String state1;
   String state2;
 
-  BannerAd createBannerAd() {
-    return BannerAd(
+  InmobiBannerAd createBannerAd() {
+    return InmobiBannerAd(
       adUnitId: /*BannerAd.testAdUnitId*/"1583079773786",
-      size: AdSize.banner,
+      size: InmobiAdSize.banner,
       targetingInfo: targetingInfo,
       listener: (InmobiMobileAdEvent event, {String adResource}) {
         print("BannerAd event $event");
@@ -42,8 +42,8 @@ class _MyAppState extends State<MyApp> {
     );
   }
 
-  InterstitialAd createInterstitialAd() {
-    return InterstitialAd(
+  InmobiInterstitialAd createInterstitialAd() {
+    return InmobiInterstitialAd(
       adUnitId: /*InterstitialAd.testAdUnitId*/"1585427131512",
       targetingInfo: targetingInfo,
       listener: (InmobiMobileAdEvent event, {String adResource}) {
@@ -60,10 +60,10 @@ class _MyAppState extends State<MyApp> {
     super.initState();
     FlutterInmobi.instance.initialize(appId: /*FirebaseAdMob.testAppId*/"eed13362e55b4b49b9e99ed27c736777");
 //    _bannerAd = createBannerAd()..load();
-    RewardedVideoAd.instance.listener = (RewardedVideoAdEvent event,
+    InmobiRewardedVideoAd.instance.listener = (InmobiRewardedVideoAdEvent event,
         {String rewardType, int rewardAmount, String adResource}) {
       print("RewardedVideoAd event $event");
-      if (event == RewardedVideoAdEvent.rewarded) {
+      if (event == InmobiRewardedVideoAdEvent.rewarded) {
         setState(() {
           _coins += rewardAmount;
           state2=event.toString();
@@ -132,7 +132,7 @@ class _MyAppState extends State<MyApp> {
                 RaisedButton(
                   child: const Text('LOAD REWARDED VIDEO（正式）'),
                   onPressed: () {
-                    RewardedVideoAd.instance.load(
+                    InmobiRewardedVideoAd.instance.load(
                         adUnitId: '1579718203512'/*RewardedVideoAd.testAdUnitId*/,
                         targetingInfo: targetingInfo);
                   },
@@ -141,7 +141,7 @@ class _MyAppState extends State<MyApp> {
                 RaisedButton(
                   child: const Text('SHOW REWARDED VIDEO'),
                   onPressed: () {
-                    RewardedVideoAd.instance.show();
+                    InmobiRewardedVideoAd.instance.show();
                   },
                 ),
                 Text("You have $_coins coins."),
