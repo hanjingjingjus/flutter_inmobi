@@ -1,0 +1,49 @@
+group 'global.juscall.flutter_inmobi'
+version '1.0'
+
+buildscript {
+    repositories {
+        google()
+        jcenter()
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:3.2.1'
+    }
+}
+
+rootProject.allprojects {
+    repositories {
+        google()
+        jcenter()
+    }
+}
+
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 28
+
+    defaultConfig {
+        minSdkVersion 16
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+    lintOptions {
+        disable 'InvalidPackage'
+    }
+
+    dependencies{
+        implementation fileTree(dir: 'libs', include: ['*.aar'])
+
+        implementation 'com.inmobi.monetization:inmobi-ads:9.0.4'
+        implementation 'com.google.android.gms:play-services-ads-identifier:17.0.0'
+        implementation 'com.google.android.gms:play-services-location:17.0.0'
+        implementation 'com.android.support:customtabs:28.0.0'
+
+        //optional dependency for better targeting
+        implementation 'com.squareup.picasso:picasso:2.71828'
+        implementation 'com.android.support:support-v4:28.0.0'
+        implementation 'com.android.support:recyclerview-v7:28.0.0'
+//        implementation 'com.android.support:multidex:1.0.1'
+    }
+}
