@@ -17,7 +17,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  static const MobileAdTargetingInfo targetingInfo = MobileAdTargetingInfo(
+  static const InmobiMobileAdTargetingInfo targetingInfo = InmobiMobileAdTargetingInfo(
     testDevices: testDevice != null ? <String>[testDevice] : null,
     keywords: <String>['foo', 'bar'],
     contentUrl: 'http://foo.com/bar.html',
@@ -36,7 +36,7 @@ class _MyAppState extends State<MyApp> {
       adUnitId: /*BannerAd.testAdUnitId*/"1583079773786",
       size: AdSize.banner,
       targetingInfo: targetingInfo,
-      listener: (MobileAdEvent event, {String adResource}) {
+      listener: (InmobiMobileAdEvent event, {String adResource}) {
         print("BannerAd event $event");
       },
     );
@@ -46,7 +46,7 @@ class _MyAppState extends State<MyApp> {
     return InterstitialAd(
       adUnitId: /*InterstitialAd.testAdUnitId*/"1585427131512",
       targetingInfo: targetingInfo,
-      listener: (MobileAdEvent event, {String adResource}) {
+      listener: (InmobiMobileAdEvent event, {String adResource}) {
         print("InterstitialAd event $event");
         setState(() {
           state1=event.toString();

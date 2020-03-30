@@ -23,7 +23,7 @@ import 'package:meta/meta.dart';
 ///
 /// Applications can wait until an ad is [MobileAdEvent.loaded] before showing
 /// it, to ensure that the ad is displayed promptly.
-enum MobileAdEvent {
+enum InmobiMobileAdEvent {
   loaded,
   failedToLoad,
   clicked,
@@ -37,21 +37,21 @@ enum MobileAdEvent {
 // Warning: the index values of the enums must match the values of the corresponding
 // AdMob constants. For example MobileAdGender.female.index == kGADGenderFemale.
 @Deprecated('This functionality is deprecated in AdMob without replacement.')
-enum MobileAdGender {
+enum InmobiMobileAdGender {
   unknown,
   male,
   female,
 }
 
 /// Signature for a [MobileAd] status change callback.
-typedef void MobileAdListener(MobileAdEvent event, {String adResource});
+typedef void InmobiMobileAdListener(InmobiMobileAdEvent event, {String adResource});
 
 /// Targeting info per the native AdMob API.
 ///
 /// This class's properties mirror the native AdRequest API. See for example:
 /// [AdRequest.Builder for Android](https://firebase.google.com/docs/reference/android/com/google/android/gms/ads/AdRequest.Builder).
-class MobileAdTargetingInfo {
-  const MobileAdTargetingInfo(
+class InmobiMobileAdTargetingInfo {
+  const InmobiMobileAdTargetingInfo(
       {this.keywords,
         this.contentUrl,
         @Deprecated('This functionality is deprecated in AdMob without replacement.')
@@ -69,7 +69,7 @@ class MobileAdTargetingInfo {
   @Deprecated('This functionality is deprecated in AdMob without replacement.')
   final DateTime birthday;
   @Deprecated('This functionality is deprecated in AdMob without replacement.')
-  final MobileAdGender gender;
+  final InmobiMobileAdGender gender;
   @Deprecated(
       'This functionality is deprecated in AdMob.  Use `childDirected` instead.')
   final bool designedForFamilies;
@@ -189,9 +189,9 @@ abstract class MobileAd {
   /// Default constructor, used by subclasses.
   MobileAd(
       {@required this.adUnitId,
-        MobileAdTargetingInfo targetingInfo,
+        InmobiMobileAdTargetingInfo targetingInfo,
         this.listener})
-      : _targetingInfo = targetingInfo ?? const MobileAdTargetingInfo() {
+      : _targetingInfo = targetingInfo ?? const InmobiMobileAdTargetingInfo() {
     assert(adUnitId != null && adUnitId.isNotEmpty);
     assert(_allAds[id] == null);
     _allAds[id] = this;
@@ -200,8 +200,8 @@ abstract class MobileAd {
   static final Map<int, MobileAd> _allAds = <int, MobileAd>{};
 
   /// Optional targeting info per the native AdMob API.
-  MobileAdTargetingInfo get targetingInfo => _targetingInfo;
-  final MobileAdTargetingInfo _targetingInfo;
+  InmobiMobileAdTargetingInfo get targetingInfo => _targetingInfo;
+  final InmobiMobileAdTargetingInfo _targetingInfo;
 
   /// Identifies the source of ads for your application.
   ///
@@ -209,7 +209,7 @@ abstract class MobileAd {
   final String adUnitId;
 
   /// Called when the status of the ad changes.
-  MobileAdListener listener;
+  InmobiMobileAdListener listener;
 
   /// An internal id that identifies this mobile ad to the native AdMob plugin.
   ///
@@ -266,8 +266,8 @@ class BannerAd extends MobileAd {
   BannerAd({
     @required String adUnitId,
     @required this.size,
-    MobileAdTargetingInfo targetingInfo,
-    MobileAdListener listener,
+    InmobiMobileAdTargetingInfo targetingInfo,
+    InmobiMobileAdListener listener,
   }) : super(
       adUnitId: adUnitId,
       targetingInfo: targetingInfo,
@@ -301,8 +301,8 @@ class InterstitialAd extends MobileAd {
   /// A valid [adUnitId] is required.
   InterstitialAd({
     String adUnitId,
-    MobileAdTargetingInfo targetingInfo,
-    MobileAdListener listener,
+    InmobiMobileAdTargetingInfo targetingInfo,
+    InmobiMobileAdListener listener,
   }) : super(
       adUnitId: adUnitId,
       targetingInfo: targetingInfo,
@@ -407,7 +407,7 @@ class RewardedVideoAd {
 
   /// Loads a rewarded video ad using the provided ad unit ID.
   Future<bool> load(
-      {@required String adUnitId, MobileAdTargetingInfo targetingInfo}) {
+      {@required String adUnitId, InmobiMobileAdTargetingInfo targetingInfo}) {
     assert(adUnitId.isNotEmpty);
     return _invokeBooleanMethod("loadRewardedVideoAd", <String, dynamic>{
       'adUnitId': adUnitId,
@@ -460,15 +460,15 @@ class FlutterInmobi {
 
   final MethodChannel _channel;
 
-  static const Map<String, MobileAdEvent> _methodToMobileAdEvent =
-  <String, MobileAdEvent>{
-    'onAdLoaded': MobileAdEvent.loaded,
-    'onAdFailedToLoad': MobileAdEvent.failedToLoad,
-    'onAdClicked': MobileAdEvent.clicked,
-    'onAdImpression': MobileAdEvent.impression,
-    'onAdOpened': MobileAdEvent.opened,
-    'onAdLeftApplication': MobileAdEvent.leftApplication,
-    'onAdClosed': MobileAdEvent.closed,
+  static const Map<String, InmobiMobileAdEvent> _methodToMobileAdEvent =
+  <String, InmobiMobileAdEvent>{
+    'onAdLoaded': InmobiMobileAdEvent.loaded,
+    'onAdFailedToLoad': InmobiMobileAdEvent.failedToLoad,
+    'onAdClicked': InmobiMobileAdEvent.clicked,
+    'onAdImpression': InmobiMobileAdEvent.impression,
+    'onAdOpened': InmobiMobileAdEvent.opened,
+    'onAdLeftApplication': InmobiMobileAdEvent.leftApplication,
+    'onAdClosed': InmobiMobileAdEvent.closed,
   };
 
   static const Map<String, RewardedVideoAdEvent> _methodToRewardedVideoAdEvent =
@@ -521,7 +521,7 @@ class FlutterInmobi {
       final int id = argumentsMap['id'];
       if (id != null && MobileAd._allAds[id] != null) {
         final MobileAd ad = MobileAd._allAds[id];
-        final MobileAdEvent mobileAdEvent = _methodToMobileAdEvent[call.method];
+        final InmobiMobileAdEvent mobileAdEvent = _methodToMobileAdEvent[call.method];
         if (mobileAdEvent != null && ad.listener != null) {
           ad.listener(mobileAdEvent, adResource: argumentsMap['adResource']);
         }

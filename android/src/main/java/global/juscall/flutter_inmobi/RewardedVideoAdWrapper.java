@@ -86,6 +86,7 @@ public class RewardedVideoAdWrapper extends InterstitialAdEventListener {
     public void onRewardsUnlocked(InMobiInterstitial inMobiInterstitial, Map<Object, Object> map) {
         super.onRewardsUnlocked(inMobiInterstitial, map);
         Log.d(TAG, "onRewardsUnlocked " + map.toString());
+        //测试广告只有{default=default}
         for (Object key : map.keySet()) {
             Object value = map.get(key);
             Log.v(TAG, "Unlocked " + value + " " + key);
