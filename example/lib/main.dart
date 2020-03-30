@@ -58,7 +58,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    FirebaseAdMob.instance.initialize(appId: /*FirebaseAdMob.testAppId*/"eed13362e55b4b49b9e99ed27c736777");
+    FlutterInmobi.instance.initialize(appId: /*FirebaseAdMob.testAppId*/"eed13362e55b4b49b9e99ed27c736777");
 //    _bannerAd = createBannerAd()..load();
     RewardedVideoAd.instance.listener = (RewardedVideoAdEvent event,
         {String rewardType, int rewardAmount, String adResource}) {

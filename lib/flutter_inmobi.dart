@@ -438,9 +438,9 @@ class RewardedVideoAd {
 ///  * [InterstitialAd], a full screen ad that must be dismissed by the user.
 ///  * [RewardedVideoAd], a full screen video ad that provides in-app user
 ///    rewards.
-class FirebaseAdMob {
+class FlutterInmobi {
   @visibleForTesting
-  FirebaseAdMob.private(MethodChannel channel) : _channel = channel {
+  FlutterInmobi.private(MethodChannel channel) : _channel = channel {
     _channel.setMethodCallHandler(_handleMethod);
   }
 
@@ -451,12 +451,12 @@ class FirebaseAdMob {
       ? 'ca-app-pub-3940256099942544~3347511713'
       : 'ca-app-pub-3940256099942544~1458002511';
 
-  static final FirebaseAdMob _instance = FirebaseAdMob.private(
+  static final FlutterInmobi _instance = FlutterInmobi.private(
     const MethodChannel('plugins.flutter.io/flutter_inmobi'),
   );
 
   /// The single shared instance of this plugin.
-  static FirebaseAdMob get instance => _instance;
+  static FlutterInmobi get instance => _instance;
 
   final MethodChannel _channel;
 
@@ -533,7 +533,7 @@ class FirebaseAdMob {
 }
 
 Future<bool> _invokeBooleanMethod(String method, [dynamic arguments]) async {
-  final bool result = await FirebaseAdMob.instance._channel.invokeMethod<bool>(
+  final bool result = await FlutterInmobi.instance._channel.invokeMethod<bool>(
     method,
     arguments,
   );
