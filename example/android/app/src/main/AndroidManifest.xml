@@ -12,7 +12,7 @@
 
     <application
         android:name="io.flutter.app.FlutterApplication"
-        android:label="flutter_inmobi_example"
+        android:label="inmobi_example"
         android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher">
         <activity

@@ -17,7 +17,8 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  static const InmobiMobileAdTargetingInfo targetingInfo = InmobiMobileAdTargetingInfo(
+  static const InmobiMobileAdTargetingInfo targetingInfo =
+      InmobiMobileAdTargetingInfo(
     testDevices: testDevice != null ? <String>[testDevice] : null,
     keywords: <String>['foo', 'bar'],
     contentUrl: 'http://foo.com/bar.html',
@@ -26,14 +27,16 @@ class _MyAppState extends State<MyApp> {
   );
 
   InmobiBannerAd _bannerAd;
+  InmobiInterstitialAd _interstitialAdtest;
   InmobiInterstitialAd _interstitialAd;
   int _coins = 0;
+  String state0;
   String state1;
   String state2;
 
   InmobiBannerAd createBannerAd() {
     return InmobiBannerAd(
-      adUnitId: /*BannerAd.testAdUnitId*/"1583079773786",
+      adUnitId: /*BannerAd.testAdUnitId*/ "1583079773786",
       size: InmobiAdSize.banner,
       targetingInfo: targetingInfo,
       listener: (InmobiMobileAdEvent event, {String adResource}) {
@@ -42,14 +45,27 @@ class _MyAppState extends State<MyApp> {
     );
   }
 
-  InmobiInterstitialAd createInterstitialAd() {
+  InmobiInterstitialAd createInterstitialAdtest() {
     return InmobiInterstitialAd(
-      adUnitId: /*InterstitialAd.testAdUnitId*/"1585427131512",
+      adUnitId: /*InterstitialAd.testAdUnitId*/ "1585427131512",
       targetingInfo: targetingInfo,
       listener: (InmobiMobileAdEvent event, {String adResource}) {
         print("InterstitialAd event $event");
         setState(() {
-          state1=event.toString();
+          state0 = event.toString();
+        });
+      },
+    );
+  }
+
+  InmobiInterstitialAd createInterstitialAd() {
+    return InmobiInterstitialAd(
+      adUnitId: /*InterstitialAd.testAdUnitId*/ "1581746847763",
+      targetingInfo: targetingInfo,
+      listener: (InmobiMobileAdEvent event, {String adResource}) {
+        print("InterstitialAd event $event");
+        setState(() {
+          state1 = event.toString();
         });
       },
     );
@@ -58,7 +74,8 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    FlutterInmobi.instance.initialize(appId: /*FirebaseAdMob.testAppId*/"eed13362e55b4b49b9e99ed27c736777");
+    FlutterInmobi.instance.initialize(
+        appId: /*FirebaseAdMob.testAppId*/ "eed13362e55b4b49b9e99ed27c736777");
 //    _bannerAd = createBannerAd()..load();
     InmobiRewardedVideoAd.instance.listener = (InmobiRewardedVideoAdEvent event,
         {String rewardType, int rewardAmount, String adResource}) {
@@ -66,7 +83,7 @@ class _MyAppState extends State<MyApp> {
       if (event == InmobiRewardedVideoAdEvent.rewarded) {
         setState(() {
           _coins += rewardAmount;
-          state2=event.toString();
+          state2 = event.toString();
         });
       }
     };
@@ -76,6 +93,7 @@ class _MyAppState extends State<MyApp> {
   void dispose() {
     _bannerAd?.dispose();
     _interstitialAd?.dispose();
+    _interstitialAdtest?.dispose();
     super.dispose();
   }
 
@@ -84,7 +102,7 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('AdMob Plugin example app'),
+          title: const Text('Inmobi example app'),
         ),
         body: SingleChildScrollView(
           child: Center(
@@ -92,59 +110,59 @@ class _MyAppState extends State<MyApp> {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-//                RaisedButton(
-//                    child: const Text('SHOW BANNER'),
-//                    onPressed: () {
-//                      _bannerAd ??= createBannerAd();
-//                      _bannerAd
-//                        ..load()
-//                        ..show();
-//                    }),
-//                RaisedButton(
-//                    child: const Text('SHOW BANNER WITH OFFSET'),
-//                    onPressed: () {
-//                      _bannerAd ??= createBannerAd();
-//                      _bannerAd
-//                        ..load()
-//                        ..show(horizontalCenterOffset: -50, anchorOffset: 100);
-//                    }),
-//                RaisedButton(
-//                    child: const Text('REMOVE BANNER'),
-//                    onPressed: () {
-//                      _bannerAd?.dispose();
-//                      _bannerAd = null;
-//                    }),
                 RaisedButton(
-                  child: const Text('LOAD INTERSTITIAL(测试)'),
+                  child: const Text('LOAD INTERSTITIAL(测试模式开启)'),
+                  onPressed: () {
+                    _interstitialAdtest?.dispose();
+                    _interstitialAdtest = createInterstitialAdtest()..load();
+                  },
+                ),
+
+                RaisedButton(
+                  child: const Text('SHOW INTERSTITIAL'),
+                  onPressed: () {
+                    _interstitialAdtest?.show();
+                  },
+                ),
+
+                Padding(
+                  padding: EdgeInsets.only(bottom: 20),
+                  child: Text("广告状态：$state0"),
+                ),
+
+                RaisedButton(
+                  child: const Text('LOAD INTERSTITIAL(测试模式关闭)'),
                   onPressed: () {
                     _interstitialAd?.dispose();
                     _interstitialAd = createInterstitialAd()..load();
                   },
                 ),
 
-                Text("状态$state1"),
                 RaisedButton(
                   child: const Text('SHOW INTERSTITIAL'),
                   onPressed: () {
                     _interstitialAd?.show();
                   },
                 ),
-                RaisedButton(
-                  child: const Text('LOAD REWARDED VIDEO（正式）'),
-                  onPressed: () {
-                    InmobiRewardedVideoAd.instance.load(
-                        adUnitId: '1579718203512'/*RewardedVideoAd.testAdUnitId*/,
-                        targetingInfo: targetingInfo);
-                  },
-                ),
-                Text("状态$state2"),
-                RaisedButton(
-                  child: const Text('SHOW REWARDED VIDEO'),
-                  onPressed: () {
-                    InmobiRewardedVideoAd.instance.show();
-                  },
-                ),
-                Text("You have $_coins coins."),
+
+                Text("广告状态：$state1"),
+
+//                RaisedButton(
+//                  child: const Text('LOAD REWARDED VIDEO（正式）'),
+//                  onPressed: () {
+//                    InmobiRewardedVideoAd.instance.load(
+//                        adUnitId: '1579718203512'/*RewardedVideoAd.testAdUnitId*/,
+//                        targetingInfo: targetingInfo);
+//                  },
+//                ),
+//                Text("状态$state2"),
+//                RaisedButton(
+//                  child: const Text('SHOW REWARDED VIDEO'),
+//                  onPressed: () {
+//                    InmobiRewardedVideoAd.instance.show();
+//                  },
+//                ),
+//                Text("You have $_coins coins."),
               ].map((Widget button) {
                 return Padding(
                   padding: const EdgeInsets.symmetric(vertical: 16.0),
