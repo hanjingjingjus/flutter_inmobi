@@ -8,7 +8,7 @@ import android.view.Gravity;
 import androidx.annotation.Nullable;
 
 import com.inmobi.sdk.InMobiSdk;
-import com.inmobi.sdk.SdkInitializationListener;
+//import com.inmobi.sdk.SdkInitializationListener;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -87,7 +87,7 @@ public class FlutterInmobiPlugin implements FlutterPlugin, ActivityAware, Method
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        InMobiSdk.init(activity, appId, consentObject, new SdkInitializationListener() {
+        InMobiSdk.init(activity, appId, consentObject/*, new SdkInitializationListener() {
             @Override
             public void onInitializationComplete(@Nullable Error error) {
                 if (null != error) {
@@ -97,7 +97,7 @@ public class FlutterInmobiPlugin implements FlutterPlugin, ActivityAware, Method
                     Log.d(TAG, "InMobi Init Successful");
                 }
             }
-        });
+        }*/);
 
         InMobiSdk.setLogLevel(InMobiSdk.LogLevel.DEBUG);
         result.success(Boolean.TRUE);
